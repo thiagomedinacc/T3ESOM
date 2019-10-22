@@ -1,0 +1,63 @@
+model Company
+ 
+-- classes
+ 
+-- Double, Decimal não foram aceitos 
+ 
+class Conta
+	attributes
+		saldo : Integer
+		id : String
+	operations
+		Sacar(valor: Integer) : Boolean
+		Depositar(valor : Integer): Boolean
+		Transferir(c1 : Conta, valor: Integer) : Boolean
+		GetSaldo() : Integer
+end
+
+-- OCL constraints
+ 
+constraints
+ 
+context Conta
+  -- O saldo da conta deve ser sempre maior ou igual a zero  
+  inv SaldoMaiorIgualQueZero:
+    self.saldo >= 0
+
+context Conta
+  -- O id da conta deve possuir 9 caracteres  
+  inv TamanhoDoId:
+    self.id.size = 9 
+	
+context Conta
+  -- O id da conta nunca pode ser nulo
+  inv IdNaoNulo:
+    self.id <> null
+	
+context Conta::Sacar(valor:Integer):Boolean
+  -- O valor de saque deve ser maior que zero.
+  pre ValorDeSaqueMaiorQueZero:
+	valor > 0
+	
+context Conta::Sacar(valor:Integer):Boolean
+  -- O valor de saque deve ser menor que o saldo da conta.
+  pre ValorDeSaqueMenorQueSaldoDaConta:
+	valor < self.saldo
+	
+context Conta::Depositar(valor:Integer):Boolean
+  -- O valor de deposito deve ser maior que zero
+  pre ValorDeDepositoMaiorQueZero:
+	valor > 0
+
+	
+context Conta::Transferir(c1: Conta, valor:Integer):Boolean
+  -- O valor de transferencia deve ser menor que o saldo da conta origem
+  pre ValorDeTransferenciaMenorQueSaldoContaOrigem:
+	valor < self.saldo
+	
+	
+
+
+ 
+
+
